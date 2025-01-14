@@ -1,0 +1,212 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Betting App API",
+      "description": "API documentation for a sports betting app with endpoints for users, bets, predictions, and odds."
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "schemes": ["http"],
+    "paths": {
+      "/users/register": {
+        "post": {
+          "summary": "Register a new user",
+          "tags": ["User"],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "User registration details",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User registered successfully",
+              "schema": {
+                "$ref": "#/definitions/UserResponse"
+              }
+            },
+            "400": { "description": "Bad request" }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "summary": "User login",
+          "tags": ["User"],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "User login credentials",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User logged in successfully",
+              "schema": {
+                "$ref": "#/definitions/AuthResponse"
+              }
+            },
+            "401": { "description": "Unauthorized" }
+          }
+        }
+      },
+      "/bets/place": {
+        "post": {
+          "summary": "Place a new bet",
+          "tags": ["Bet"],
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Bearer token for user authentication",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Bet details",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Bet"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Bet placed successfully",
+              "schema": {
+                "$ref": "#/definitions/BetResponse"
+              }
+            },
+            "400": { "description": "Bad request" },
+            "401": { "description": "Unauthorized" }
+          }
+        }
+      },
+      "/bets/{betId}/result": {
+        "get": {
+          "summary": "Get the result of a specific bet",
+          "tags": ["Bet"],
+          "parameters": [
+            {
+              "name": "betId",
+              "in": "path",
+              "description": "ID of the bet",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Bet result retrieved",
+              "schema": {
+                "$ref": "#/definitions/BetResultResponse"
+              }
+            },
+            "404": { "description": "Bet not found" }
+          }
+        }
+      },
+      "/predictions": {
+        "get": {
+          "summary": "Get predictions for bets with high success rates",
+          "tags": ["Prediction"],
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Predictions retrieved successfully",
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/BetPrediction" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "example": "user123" },
+          "password": { "type": "string", "example": "password123" },
+          "email": { "type": "string", "example": "user@example.com" }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "12345" },
+          "username": { "type": "string", "example": "user123" },
+          "email": { "type": "string", "example": "user@example.com" }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "example": "user123" },
+          "password": { "type": "string", "example": "password123" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string", "example": "eyJhbGciOi..." }
+        }
+      },
+      "Bet": {
+        "type": "object",
+        "properties": {
+          "userId": { "type": "string", "example": "12345" },
+          "playerId": { "type": "string", "example": "67890" },
+          "betType": { "type": "string", "example": "win" },
+          "amount": { "type": "number", "example": 100 },
+          "odds": { "type": "number", "example": 1.5 }
+        }
+      },
+      "BetResponse": {
+        "type": "object",
+        "properties": {
+          "betId": { "type": "string", "example": "abcdef12345" },
+          "userId": { "type": "string", "example": "12345" },
+          "status": { "type": "string", "example": "pending" }
+        }
+      },
+      "BetResultResponse": {
+        "type": "object",
+        "properties": {
+          "betId": { "type": "string", "example": "abcdef12345" },
+          "status": { "type": "string", "example": "won" },
+          "payout": { "type": "number", "example": 150 }
+        }
+      },
+      "BetPrediction": {
+        "type": "object",
+        "properties": {
+          "betType": { "type": "string", "example": "win" },
+          "successRate": { "type": "number", "example": 75 },
+          "odds": { "type": "number", "example": 1.5 }
+        }
+      }
+    },
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+  
