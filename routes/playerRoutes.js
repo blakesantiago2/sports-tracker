@@ -1,15 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const playerController = require('../controllers/playerController');
+import { Router } from 'express';
+const router = Router();
+import { getAllPlayers, getPlayerById } from '../controllers/playerController.js';
 
 
-router.get('/', playerController.getAllPlayers);
+router.get('/', getAllPlayers);
 
-router.get('/: playerId', playerController.getPlayerById);
-
-
-
+router.get('/: playerId', getPlayerById);
 
 
 
-module.exports = router;
+
+
+
+export default router;

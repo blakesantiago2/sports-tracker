@@ -13,12 +13,15 @@
 // module.exports = mongoose.model('GameStats', gameStatsSchema);
 
 // models/GameStats.js
-const mongoose = require('mongoose');
+// import { Schema, model } from 'mongoose';
+import mongoose from "mongoose";
 
-const gameStatsSchema = new mongoose.Schema({
-    player: { type: mongoose.Schema.Types.ObjectId, ref: 'Player' }, // Reference to player
-    team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },     // Team the player belongs to
-    opponentTeam: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }, // Opponent team
+const { Schema, model} = mongoose; // Destructure Schema from mongoose
+
+const gameStatsSchema = new Schema({
+    player: { type: Schema.Types.ObjectId, ref: 'Player' }, // Reference to player
+    team: { type: Schema.Types.ObjectId, ref: 'Team' },     // Team the player belongs to
+    opponentTeam: { type: Schema.Types.ObjectId, ref: 'Team' }, // Opponent team
     gameDate: Date,   // Date of the game
     points: Number,   // Points scored by the player
     rebounds: Number, // Rebounds made by the player
@@ -26,5 +29,7 @@ const gameStatsSchema = new mongoose.Schema({
     outcome: String   // 'win' or 'loss'
 });
 
-module.exports = mongoose.model('GameStats', gameStatsSchema);
+const GameStats = model('GameStats', gameStatsSchema);
+// export default model('GameStats', gameStatsSchema);
 
+export default GameStats;

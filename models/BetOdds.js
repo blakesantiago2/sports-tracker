@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose'
 
 const betOddsSchema = new mongoose.Schema({
     gameDate: { type: Date, required: true },
@@ -18,4 +19,8 @@ const betOddsSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('BetOdds', betOddsSchema);
+// export default model('BetOdds', betOddsSchema);
+
+const BetOdds = mongoose.model('BetOdds', betOddsSchema);
+
+export default BetOdds;

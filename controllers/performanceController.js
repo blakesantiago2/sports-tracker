@@ -1,5 +1,7 @@
-const GameStats = require('../models/GameStats');
-const { startOfDay, subYears } = require('date-fns');
+// import { find } from '../models/GameStats.js';
+import GameStats from '../models/GameStats.js';
+ import { startOfDay, subYears } from 'date-fns';
+
 
 // Helper function to calculate averages
 const calculateAverages = (games) => {
@@ -15,13 +17,13 @@ const calculateAverages = (games) => {
 };
 
 // Player performance against a specific team
-exports.getPlayerPerformance = async (req, res) => {
+export async function getPlayerPerformance(req, res) {
     try {
         const { playerId, opponentTeamId } = req.params;
         const fiveYearsAgo = subYears(startOfDay(new Date()), 5);
 
         // Find games played by the player against the opponent in the last 5 years
-        const games = await GameStats.find({
+        const games = await find({
             player: playerId,
             opponentTeam: opponentTeamId,
             gameDate: { $gte: fiveYearsAgo }
@@ -41,16 +43,16 @@ exports.getPlayerPerformance = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // Team performance against a specific team
-exports.getTeamPerformance = async (req, res) => {
+export async function getTeamPerformance(req, res) {
     try {
         const { teamId, opponentTeamId } = req.params;
         const fiveYearsAgo = subYears(startOfDay(new Date()), 5);
 
         // Find games played by the team against the opponent in the last 5 years
-        const games = await GameStats.find({
+        const games = await find({
             team: teamId,
             opponentTeam: opponentTeamId,
             gameDate: { $gte: fiveYearsAgo }
@@ -73,4 +75,4 @@ exports.getTeamPerformance = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}

@@ -1,10 +1,10 @@
 // models/Bet.js
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const betSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },  // If you have users
-    player: { type: mongoose.Schema.Types.ObjectId, ref: 'Player' },  // Player bet
-    team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },  // Team bet
+const betSchema = new Schema({
+    user: { type: Schema.Types.ObjectId, ref: 'User' },  // If you have users
+    player: { type: Schema.Types.ObjectId, ref: 'Player' },  // Player bet
+    team: { type: Schema.Types.ObjectId, ref: 'Team' },  // Team bet
     betType: {
         type: String,
         enum: ['win', 'loss', 'over', 'under', 'pointSpread', 'performance'],
@@ -23,4 +23,4 @@ const betSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Bet', betSchema);
+export default model('Bet', betSchema);

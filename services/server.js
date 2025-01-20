@@ -1,21 +1,20 @@
 // server.js
+import { config } from "dotenv";
+import express, { json } from "express";
+import { connect } from "mongoose";
+import userroutes from './services/userroutes.js';
+import logger from './middleware/logger';
+import authenticateJWT from './middleware/auth';
+import { validateBet } from './middleware/validation';
+import errorHandler from './middleware/errorHandler';
 
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const userRoutes = require('./routes/userRoutes');
-const logger = require('./middleware/logger');
-const authenticateJWT = require('./middleware/auth');
-const { validateBet } = require('./middleware/validation');
-const errorHandler = require('./middleware/errorHandler');
-
-dotenv.config();
+config();
 
 // Initialize Express
 const app = express();
 
 // Middleware to parse JSON data
-app.use(express.json());
+app.use(json());
 
 // Middleware imports
 
@@ -23,13 +22,13 @@ app.use(express.json());
 
 app.use(logger);
 
-const betController = require('./controllers/betController');
-app.post('/api/bets/place', authenticateJWT, validateBet, betController.placeBet);
+import { placeBet } from './controllers/betController';
+app.post('/api/bets/place', authenticateJWT, validateBet, placeBet);
 
 app.use(errorHandler);
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
+connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

@@ -1,25 +1,34 @@
-const Bet = require('../models/bet');
-const Player = require('../models/Player');
-const Team = require('../models/Team');
-
+// import Bet, { find, findById } from '../models/bet.js';
+// import { findById as _findById } from '../models/Player.js';
+// import { findById as __findById } from '../models/Team.js';
+import Player from '../models/Player.js';
+import Bet from '../models/Bet.js';
+import Team from '../models/Team.js';
 // Get betting odds for a player
-exports.getPlayerOdds = async (req, res) => {
+export const getPlayerOdds = async (req, res) => {
     try {
-        const player = await Player.findById(req.params.playerId);
-        if (!player) return res.status(404).json({ message: 'Player not found' });
-        
-        // Calculate odds based on player stats (simplified example)
+        // Fetch the player by ID from the database
+        const player = await Player.findById(req.params.playerId); // Assuming 'Player' is your Mongoose model
+        if (!player) {
+            return res.status(404).json({ message: 'Player not found' });
+        }
+
+        // Calculate odds based on player stats (this function must be defined elsewhere)
         const odds = calculatePlayerOdds(player);
+
+        // Send the response with player info and calculated odds
         res.status(200).json({ player, odds });
     } catch (err) {
+        // Handle any server errors
         res.status(500).json({ message: err.message });
     }
 };
 
+
 // Get betting odds for a team
-exports.getTeamOdds = async (req, res) => {
+export const getTeamOdds = async (req, res) => {
     try {
-        const team = await Team.findById(req.params.teamId);
+        const team = await __findById(req.params.teamId);
         if (!team) return res.status(404).json({ message: 'Team not found' });
         
         // Calculate odds based on team performance (simplified example)
@@ -28,12 +37,12 @@ exports.getTeamOdds = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // Place a bet on a player
-exports.placePlayerBet = async (req, res) => {
+export const placePlayerBet = async (req, res) => {
     try {
-        const player = await Player.findById(req.params.playerId);
+        const player = await _findById(req.params.playerId);
         if (!player) return res.status(404).json({ message: 'Player not found' });
 
         const bet = new Bet({
@@ -49,35 +58,23 @@ exports.placePlayerBet = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // Get all bets placed by a user
-exports.getUserBets = async (req, res) => {
+export const getUserBets = async (req, res) => {
     try {
-        const bets = await Bet.find({ user: req.params.userId }).populate('player team');
+        const bets = await find({ user: req.params.userId }).populate('player team');
         res.status(200).json(bets);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
-
-// Get the result of a specific bet
-exports.getBetResult = async (req, res) => {
-    try {
-        const bet = await Bet.findById(req.params.betId).populate('player team');
-        if (!bet) return res.status(404).json({ message: 'Bet not found' });
-
-        res.status(200).json(bet.result);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
+}
 
 
 // Place a bet on a team
-exports.placeTeamBet = async (req, res) => {
+export const placeTeamBet = async (req, res) => {
     try {
-        const team = await Team.findById(req.params.teamId);
+        const team = await __findById(req.params.teamId);
         if (!team) return res.status(404).json({ message: 'Team not found' });
 
         const bet = new Bet({
@@ -92,5 +89,33 @@ exports.placeTeamBet = async (req, res) => {
         res.status(201).json(savedBet);
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+}
+
+export const getBetResult = async (req, res) => {
+    try {
+        // Example logic to retrieve a bet result
+        const betId = req.params.id;
+        const bet = await Bet.findById(betId);
+        if (!bet) return res.status(404).json({ message: 'Bet not found' });
+
+        res.status(200).json({ result: bet.result });
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving bet result', error });
+    }
+};
+
+export const getTeamDetails = async (req, res) => {
+    try {
+        const teamId = req.params.teamId; // Extract the team ID from the request parameters
+        const team = await Team.findById(teamId); // Assuming you have a Team model
+
+        if (!team) {
+            return res.status(404).json({ message: 'Team not found' });
+        }
+
+        res.status(200).json(team);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching team details', error });
     }
 };

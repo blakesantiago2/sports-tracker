@@ -1,11 +1,15 @@
-const BetOdds = require('../models/BetOdds');
+// import { findOne, find } from '../models/BetOdds.js';
+import BetOdds from '../models/BetOdds.js';
+
+
+
 
 // Get betting odds for a specific game by teams and date
-exports.getOddsByGame = async (req, res) => {
+export async function getOddsByGame(req, res) {
     const { homeTeam, awayTeam, gameDate } = req.params;
 
     try {
-        const odds = await BetOdds.findOne({
+        const odds = await findOne({
             homeTeam,
             awayTeam,
             gameDate: new Date(gameDate) // Ensure date format matches
@@ -19,14 +23,14 @@ exports.getOddsByGame = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+}
 
 // Get all odds for a given team across all games
-exports.getOddsByTeam = async (req, res) => {
+export async function getOddsByTeam(req, res) {
     const { team } = req.params;
 
     try {
-        const odds = await BetOdds.find({
+        const odds = await find({
             $or: [{ homeTeam: team }, { awayTeam: team }]
         });
 
@@ -38,4 +42,4 @@ exports.getOddsByTeam = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+}

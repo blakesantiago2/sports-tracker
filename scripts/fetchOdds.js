@@ -1,29 +1,29 @@
-const axios = require('axios');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const BetOdds = require('../models/BetOdds');
-dotenv.config();
+import { get } from 'axios';
+import { connect, connection } from 'mongoose';
+import { config } from 'dotenv';
+import { findOne, create } from '../models/BetOdds';
+config();
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to MongoDB"))
     .catch(err => console.error("MongoDB connection error:", err));
 
 async function fetchAndSaveOdds() {
     try {
-        const response = await axios.get(`https://api.example.com/odds`, {
+        const response = await get(`https://api.example.com/odds`, {
             headers: { 'api-key': process.env.env.ODDS_API_KEY }
         });
         const oddsData = response.data;
 
         for (const game of oddsData.games) {
-            const existingOdds = await BetOdds.findOne({
+            const existingOdds = await findOne({
                 homeTeam: game.homeTeam,
                 awayTeam: game.awayTeam,
                 gameDate: new Date(game.gameDate)
             });
 
             if (!existingOdds) {
-                await BetOdds.create({
+                await create({
                     gameDate: game.gameDate,
                     homeTeam: game.homeTeam,
                     awayTeam: game.awayTeam,
@@ -35,7 +35,7 @@ async function fetchAndSaveOdds() {
         }
 
         console.log("Odds data fetched and stored.");
-        mongoose.connection.close();
+        connection.close();
     } catch (error) {
         console.error("Error fetching odds data:", error);
     }
