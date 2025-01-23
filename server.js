@@ -11,13 +11,19 @@ import performanceRoutes from './routes/performanceRoutes.js';
 import betPredictionRoutes from './routes/betPredictionRoutes.js';
 import betOddsRoutes from './routes/betOddsRoutes.js';
 import fetchAndSaveNflData from './services/saveNflData.js';
-
+import { fetchAndSaveNflScores } from './services/nflScoresService.js';
+import  fetchAndSaveAllNflOdds from './services/betOddsServices.js';
+import fetchAndSaveGames from './services/nbaScoreService.js'
+import events from 'events';
+events.defaultMaxListeners = 15;
 // const { initializeTeams } = require('./models/Team');
+fetchAndSaveGames('basketball_nba');
 scheduleCronJobs(); // Run the cron jobs
 fetchAndSaveNflData(); // Call the function
 const app = express();
 app.use(express.json());
 dotenv.config();
+fetchAndSaveAllNflOdds();
 // MongoDB connection
 // mongoose.connect(process.env.MONGO_URI, {
 //     useNewUrlParser: true,
@@ -35,6 +41,7 @@ connect(process.env.MONGO_URI)
         console.log('Connected to MongoDB');
         // await initializeTeams();
          await fetchAndSaveNflData(); // Call the function after connecting
+         await fetchAndSaveNflScores();
     })
     .catch(err => console.error('MongoDB connection error:', err));
 

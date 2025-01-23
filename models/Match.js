@@ -6,10 +6,10 @@ const matchSchema = new mongoose.Schema({
 
     homeTeam: {type: String, required: true, trim: true},
     awayTeam: {type: String, required: true, trim: true},
-    homeScore: {type: String, required: true, trim: true},
-    awayScore: {type: String, required: true, trim: true},
+    homeScore: {type: String, required: false, trim: true},
+    awayScore: {type: String, required: false, trim: true},
     date: {type: Date, required: true},
-    status:{type: String, enum: ['Scheduled', 'Ongoing', 'Completed'], default: 'Scheduled'},//current status of game 
+    status:{type: String, enum: ['scheduled', 'ongoing', 'completed'], default: 'scheduled'},//current status of game 
      
 }, { timestamps: true });
 
