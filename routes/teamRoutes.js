@@ -1,6 +1,6 @@
 import express from 'express';
-import { getTeams, getTeamById, createTeam } from '../controllers/teamController.js';
-import { fetchNFLDataController } from '../controllers/teamController.js';
+import { fetchNFLDataController, getTeams, getTeamById, createTeam } from '../controllers/teamController.js';
+
 
 
 import { getTeamDetails } from '../controllers/betController.js';

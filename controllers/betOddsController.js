@@ -9,7 +9,7 @@ export async function getOddsByGame(req, res) {
     const { homeTeam, awayTeam, gameDate } = req.params;
 
     try {
-        const odds = await findOne({
+        const odds = await BetOdds.findOne({
             homeTeam,
             awayTeam,
             gameDate: new Date(gameDate) // Ensure date format matches
@@ -30,7 +30,7 @@ export async function getOddsByTeam(req, res) {
     const { team } = req.params;
 
     try {
-        const odds = await find({
+        const odds = await BetOdds.find({
             $or: [{ homeTeam: team }, { awayTeam: team }]
         });
 

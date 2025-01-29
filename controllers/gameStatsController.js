@@ -23,7 +23,7 @@ export async function getPlayerPerformance(req, res) {
         const fiveYearsAgo = subYears(startOfDay(new Date()), 5);
 
         // Find games played by the player against the opponent in the last 5 years
-        const games = await find({
+        const games = await GameStats.find({
             player: playerId,
             opponentTeam: opponentTeamId,
             gameDate: { $gte: fiveYearsAgo }
@@ -52,7 +52,7 @@ export async function getTeamPerformance(req, res) {
         const fiveYearsAgo = subYears(startOfDay(new Date()), 5);
 
         // Find games played by the team against the opponent in the last 5 years
-        const games = await find({
+        const games = await GameStats.find({
             team: teamId,
             opponentTeam: opponentTeamId,
             gameDate: { $gte: fiveYearsAgo }
@@ -76,3 +76,16 @@ export async function getTeamPerformance(req, res) {
         res.status(500).json({ message: err.message });
     }
 }
+
+// Get all team scores
+export const getAllTeamScores = async (req, res) => {
+    try {
+        const scores = await GameStats.find({}, 'team scores gameDate'); // Adjust fields as needed
+        if (!scores.length) {
+            return res.status(404).json({ message: 'No team scores found' });
+        }
+        res.status(200).json(scores);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching team scores', error: error.message });
+    }
+};

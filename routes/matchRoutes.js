@@ -3,8 +3,8 @@ const router = express.Router();
 import { getAllMatches, getMatchById } from '../controllers/matchController.js';
 
 
-router.get('/mactches', getAllMatches);
+router.get('/matches', getAllMatches);
 
-router.get('/matches/: matchId', getMatchById);
+router.get('/matches/:matchId', getMatchById);
 
 export default router;    

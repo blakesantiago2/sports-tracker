@@ -6,7 +6,7 @@ import Team from '../models/Team.js'; // Adjust the path based on your folder st
 const API_URL = 'https://api.the-odds-api.com/v4/sports';
 const API_KEY = '8aaa395753ffa30c5587f98eff28f4e6';
 
-export async function fetchAndSaveNFLData() {
+export async function fetchNflData() {
     try {
         console.log('Fetching NFL data from the API...');
 
@@ -23,7 +23,7 @@ export async function fetchAndSaveNFLData() {
 
         if (nflData.length === 0) {
             console.log('No NFL data found.');
-            return;
+            return nflData;
         }
 
         // Map API data to your schema
@@ -47,4 +47,4 @@ export async function fetchAndSaveNFLData() {
         console.error('Error fetching and saving NFL data:', error);
     }
 }
- export default fetchAndSaveNFLData; // Export it as default
+ export default fetchNflData; // Export it as default

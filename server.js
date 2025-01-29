@@ -7,10 +7,10 @@ import playerRoutes from './routes/playerRoutes.js';
 import matchRoutes from './routes/matchRoutes.js';
 import scheduleCronJobs from './cron/updateSuccessRates.js';
 import betRoutes from './routes/betRoutes.js';
-import performanceRoutes from './routes/performanceRoutes.js';
+import gameStatsRoutes from './routes/GameStatsRoutes.js';
 import betPredictionRoutes from './routes/betPredictionRoutes.js';
 import betOddsRoutes from './routes/betOddsRoutes.js';
-import fetchAndSaveNflData from './services/saveNflData.js';
+import fetchNflData from './services/saveNflData.js';
 import { fetchAndSaveNflScores } from './services/nflScoresService.js';
 import  fetchAndSaveAllNflOdds from './services/betOddsServices.js';
 import fetchAndSaveGames from './services/nbaScoreService.js'
@@ -19,7 +19,6 @@ events.defaultMaxListeners = 15;
 // const { initializeTeams } = require('./models/Team');
 fetchAndSaveGames('basketball_nba');
 scheduleCronJobs(); // Run the cron jobs
-fetchAndSaveNflData(); // Call the function
 const app = express();
 app.use(express.json());
 dotenv.config();
@@ -40,7 +39,7 @@ connect(process.env.MONGO_URI)
     .then(async () => {
         console.log('Connected to MongoDB');
         // await initializeTeams();
-         await fetchAndSaveNflData(); // Call the function after connecting
+         await fetchNflData(); // Call the function after connecting
          await fetchAndSaveNflScores();
     })
     .catch(err => console.error('MongoDB connection error:', err));
@@ -53,10 +52,10 @@ app.use('/api/bets', betRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/players', playerRoutes);
 app.use('/api/matches', matchRoutes);
-app.use('/api', performanceRoutes);
-app.use('/api', betRoutes);
-app.use('/api', betPredictionRoutes);
-app.use('/api', betOddsRoutes);
+app.use('/api/gameStats', gameStatsRoutes);
+app.use('/api/bets', betRoutes);
+app.use('/api/bet-predictions', betPredictionRoutes);
+app.use('/api/bet-odds', betOddsRoutes);
 
 
 
