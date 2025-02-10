@@ -78,14 +78,30 @@ export async function getTeamPerformance(req, res) {
 }
 
 // Get all team scores
+// export const getAllTeamScores = async (req, res) => {
+//     try {
+//         const scores = await GameStats.find({}, 'team scores gameDate'); // Adjust fields as needed
+//         if (!scores.length) {
+//             return res.status(404).json({ message: 'No team scores found' });
+//         }
+//         res.status(200).json(scores);
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error fetching team scores', error: error.message });
+//     }
+// };
 export const getAllTeamScores = async (req, res) => {
     try {
-        const scores = await GameStats.find({}, 'team scores gameDate'); // Adjust fields as needed
+        const scores = await GameStats.find({}, 'home_team away_team scores commence_time');
+
         if (!scores.length) {
             return res.status(404).json({ message: 'No team scores found' });
         }
+
+        console.log("✅ API Data Sent:", scores);  // Debugging log
+
         res.status(200).json(scores);
     } catch (error) {
+        console.error('❌ Error fetching team scores:', error);
         res.status(500).json({ message: 'Error fetching team scores', error: error.message });
     }
 };

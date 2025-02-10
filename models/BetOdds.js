@@ -1,5 +1,4 @@
 // import { Schema, model } from 'mongoose';
-import mongoose from 'mongoose'
 
 // const betOddsSchema = new mongoose.Schema({
 //     gameDate: { type: Date, required: true },
@@ -20,6 +19,7 @@ import mongoose from 'mongoose'
 // }, { timestamps: true });
 
 // export default model('BetOdds', betOddsSchema);
+import mongoose from 'mongoose'
 
 const outcomeSchema = new mongoose.Schema({
     name: { type: String, required: true },

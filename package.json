@@ -5,9 +5,8 @@
   "description": "A sports tracking app with React and Node.js",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "dev": "nodemon server.js",
-    "build": "webpack",
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
     "frontend": "npm start --prefix client",
     "backend": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +14,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "axios": "^1.7.7",
+    "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.17.1",
@@ -26,12 +26,16 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^8.1.0",
-    "redux": "^4.2.1"
+    "react-router-dom": "^6.29.0",
+    "redux": "^4.2.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
-    "@babel/preset-react": "^7.22.5",
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
+    "@babel/preset-react": "^7.26.3",
     "babel-loader": "^9.2.1",
     "css-loader": "^6.11.0",
     "html-webpack-plugin": "^5.6.3",

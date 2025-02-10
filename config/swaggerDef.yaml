@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: Sports Tracker API
+  description: "API for tracking sports teams, players, matches, and betting odds."
+  version: "1.0.0"
+  contact:
+    name: API Support
+    url: https://yourwebsite.com/support
+    email: support@yourwebsite.com
+servers:
+  - url: http://localhost:5001
+    description: Local development server
+
+paths:
+  /api/players:
+    get:
+      summary: Get all players
+      description: Retrieve a list of all players in the system.
+      tags:
+        - Players
+      responses:
+        "200":
+          description: Successfully retrieved the list of players
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Player"
+        "500":
+          description: Internal server error
+
+    post:
+      summary: Add a new player
+      description: Create a new player record.
+      tags:
+        - Players
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Player"
+      responses:
+        "201":
+          description: Player successfully created
+        "400":
+          description: Invalid input, object invalid
+
+  /api/players/{playerId}:
+    get:
+      summary: Get player by ID
+      description: Fetch detailed information about a specific player.
+      tags:
+        - Players
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieved player
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+        "404":
+          description: Player not found
+
+    put:
+      summary: Update a player's details
+      description: Modify an existing player's information.
+      tags:
+        - Players
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerUpdate"
+      responses:
+        "200":
+          description: Player updated successfully
+        "404":
+          description: Player not found
+
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "607f1f77bcf86cd799439014"
+        name:
+          type: string
+          example: "LeBron James"
+        team:
+          type: string
+          example: "Los Angeles Lakers"
+        position:
+          type: string
+          example: "Small Forward"
+        stats:
+          type: object
+          properties:
+            gamesPlayed:
+              type: integer
+              example: 82
+            pointsPerGame:
+              type: number
+              example: 27.5
+            reboundsPerGame:
+              type: number
+              example: 7.4
+            assistsPerGame:
+              type: number
+              example: 7.2
+    PlayerUpdate:
+      type: object
+      properties:
+        team:
+          type: string
+          example: "Miami Heat"
+        position:
+          type: string
+          example: "Power Forward"

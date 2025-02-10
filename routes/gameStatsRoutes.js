@@ -9,5 +9,6 @@ router.get('/players/:playerId/gameStats/:opponentTeamId', getPlayerPerformance)
 // Get team performance against a specific team in the past 5 years
 router.get('/teams/:teamId/gameStats/:opponentTeamId', getTeamPerformance);
 
-router.get('/teams/scores', getAllTeamScores);
+// router.get('/teams/scores', getAllTeamScores);
+router.get('/', getAllTeamScores);
 export default router;

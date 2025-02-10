@@ -35,24 +35,28 @@
 // export default GameStats;
 
 // models/Game.js
+
+
 import mongoose from 'mongoose';
 
 const scoreSchema = new mongoose.Schema({
     name: { type: String, required: true }, // Team name
-    score: { type: Number }, // Score (optional if not completed yet)
+    score: { type: Number, required: true } // Actual score
 });
 
 const gameStatsSchema = new mongoose.Schema({
-    id: { type: String, required: true, unique: true }, // Unique ID of the game
-    sportKey: { type: String, required: true }, // e.g., "basketball_nba"
-    sportTitle: { type: String, required: true }, // e.g., "NBA"
-    commenceTime: { type: Date, required: true }, // Game start time
-    completed: { type: Boolean, required: true }, // If the game is completed
-    homeTeam: { type: String, required: true }, // Home team name
-    awayTeam: { type: String, required: true }, // Away team name
-    scores: [scoreSchema], // Array of scores
-    lastUpdate: { type: Date, required: false }, // Last update time
+    id: { type: String, required: true, unique: true }, // Unique game ID
+    sport_key: { type: String, required: true }, // Sport key (e.g., "basketball_nba")
+    sport_title: { type: String, required: true }, // Sport title (e.g., "NBA")
+    commence_time: { type: Date, required: true }, // Game start time
+    completed: { type: Boolean, required: true }, // Game status
+    home_team: { type: String, required: true }, // Home team name
+    away_team: { type: String, required: true }, // Away team name
+    scores: [scoreSchema], // Array of scores for both teams
+    last_update: { type: Date, required: false } // Last update time
 }, { timestamps: true });
+
+
 
 const GameStats = mongoose.model('GameStats', gameStatsSchema);
 export default GameStats;
